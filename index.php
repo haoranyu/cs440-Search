@@ -23,10 +23,15 @@ else{
 	include("function.ass.php");
 	$maze = ass($maze, $start, $end);
 }
+
+if($maze == -1){
+	exit("Cannot find a solution");
+}
 $maze[0] = drawSolution($maze[0], $end, $start);
 printMaze($maze[0],$mazeW,$mazeH);
 
 echo "Path cost: ".$maze[1]."\n";
 echo "Number of nodes expanded: ".$maze[2]."\n";
-echo "Maximum size of the frontier: ".$maze[3];
+echo "Maximum size of the frontier: ".$maze[3]."\n";
+echo "Maximum tree depth searched: ".$maze[4];
 ?>

@@ -7,14 +7,14 @@ function assH($now, $end, $cost = 0){
 function ass($maze, $start, $end){
 	$pqueue = array(array($maze[$start['Y']][$start['X']],'x','x',"dis" => assH($start, $end, 0), "cost" => 0));
 	$maze[$start['Y']][$start['X']]["STAT"] = 1;
-	$maze = ass_helper($maze, $pqueue, $end);
+	$maze = ass_helper($maze, $pqueue, $end, 0, 1);
 	return $maze;
 }
 function array_uppri($array){
 	$obj = 0;
 	$size = sizeof($array);
 	for($i = 0; $i < $size; $i++){
-		if($array[$i]["dis"] < $array[$obj]["dis"]){
+		if(($array[$i]["dis"] + $array[$i]["cost"]) < ($array[$obj]["dis"] + $array[$obj]["cost"])){
 			$obj = $i;
 		}
 	}
@@ -24,13 +24,17 @@ function array_uppri($array){
 	return $array;
 }
 
-function ass_helper($maze, $pqueue, $end){
+function ass_helper($maze, $pqueue, $end, $counter, $frontier){
+	if($frontier < sizeof($pqueue)){
+		$frontier = sizeof($pqueue);
+	}
+
 	$pqueue = array_uppri($pqueue);
 	$now = array_shift($pqueue);
 	
 	$maze[$now[0]['Y']][$now[0]['X']]["PREV"] = array($now[1],$now[2]);
 	if($maze[$now[0]['Y']][$now[0]['X']]["CONT"] == "."){
-		return $maze;
+		return array($maze,$now['cost'],$counter, $frontier);
 	}
 	else{
 		if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] == 0){
@@ -70,7 +74,7 @@ function ass_helper($maze, $pqueue, $end){
 									  ));
 		}
 		
-		return ass_helper($maze, $pqueue, $end);
+		return ass_helper($maze, $pqueue, $end, $counter+1, $frontier);
 	}
 }
 

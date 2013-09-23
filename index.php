@@ -15,10 +15,18 @@ elseif(isset($_GET['gbs'])){
 	include("function.gbs.php");
 	$maze = gbs($maze, $start, $end);
 }
+elseif(isset($_GET['ucs'])){
+	include("function.ucs.php");
+	$maze = ucs($maze, $start);
+}
 else{
 	include("function.ass.php");
 	$maze = ass($maze, $start, $end);
 }
-$maze = drawSolution($maze, $end, $start);
-printMaze($maze,$mazeW,$mazeH);
+$maze[0] = drawSolution($maze[0], $end, $start);
+printMaze($maze[0],$mazeW,$mazeH);
+
+echo "Path cost: ".$maze[1]."\n";
+echo "Number of nodes expanded: ".$maze[2]."\n";
+echo "Maximum size of the frontier: ".$maze[3];
 ?>

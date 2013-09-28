@@ -40,12 +40,12 @@ function ass_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 		return array($maze,$now['cost'],$counter, $frontier, $depth);
 	}
 	else{
-		if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] == 0){
-			$maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] = 1;
-			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']+1],
+		if($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] == 0){
+			$maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] = 1;
+			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']-1],
 										$now[0]['X'],
 										$now[0]['Y'],
-										"dis" => assH(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), 
+										"dis" => assH(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), 
 										"cost" => ($now['cost'] + 1)
 									  ));
 		}
@@ -58,12 +58,12 @@ function ass_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 										"cost" => ($now['cost'] + 1)
 									  ));
 		}
-		if($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] == 0){
-			$maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] = 1;
-			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']-1],
+		if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] == 0){
+			$maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] = 1;
+			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']+1],
 										$now[0]['X'],
 										$now[0]['Y'],
-										"dis" => assH(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), 
+										"dis" => assH(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), 
 										"cost" => ($now['cost'] + 1)
 									  ));
 		}

@@ -31,10 +31,8 @@ function array_uppri($array){
 	return $array;
 }
 
-
 function gbs($maze, $start, $end, $aimCount){
 	$pqueue = array(array($maze[$start['Y']][$start['X']],'x','x',"dis" => 0,"cost" => 0));
-	$maze[$start['Y']][$start['X']]["STAT"] = 1;
 	$maze = gbs_helper($maze, $pqueue, $end, 0, $aimCount, 0);
 	return $maze;
 }
@@ -47,6 +45,7 @@ function gbs_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount){
 	$pqueue = array_uppri($pqueue);
 	$now = array_shift($pqueue);
 	
+	echo $now[0]['X'].",".$now[0]['Y']."\n";
 	if($maze[$now[0]['Y']][$now[0]['X']]["CONT"] == "."){
 		$end = evcFinish($end, array("X" => $now[0]['X'], "Y" => $now[0]['Y']));
 		$maze[$now[0]['Y']][$now[0]['X']]["CONT"] = i2l($findCount);
@@ -56,42 +55,35 @@ function gbs_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount){
 		return array($maze,$now['cost'], $counter);
 	}
 	else{
-		if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] == 0){
-			$maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] = 1;
-			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']+1],
-										$now[0]['X'],
-										$now[0]['Y'],
-										"dis" => gbsH(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), $end),
-										"cost" => ($now['cost'] + 1)
-									  ));
-		}
-		if($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] == 0){
-			$maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] = 1;
-			array_push($pqueue, array(	$maze[$now[0]['Y']+1][$now[0]['X']],
-										$now[0]['X'],
-										$now[0]['Y'],
-										"dis" => gbsH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1), $end),
-										"cost" => ($now['cost'] + 1)
-									  ));
-		}
-		if($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] == 0){
-			$maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] = 1;
-			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']-1],
-										$now[0]['X'],
-										$now[0]['Y'],
-										"dis" => gbsH(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), $end),
-										"cost" => ($now['cost'] + 1)
-									  ));
-		}
-		if($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] == 0){
-			$maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] = 1;
-			array_push($pqueue, array(	$maze[$now[0]['Y']-1][$now[0]['X']],
-										$now[0]['X'],
-										$now[0]['Y'],
-										"dis" => gbsH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1), $end),
-										"cost" => ($now['cost'] + 1)
-									  ));
-		}
+
+		array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']+1],
+									$now[0]['X'],
+									$now[0]['Y'],
+									"dis" => gbsH(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), $end),
+									"cost" => ($now['cost'] + 1)
+								  ));
+
+		array_push($pqueue, array(	$maze[$now[0]['Y']+1][$now[0]['X']],
+									$now[0]['X'],
+									$now[0]['Y'],
+									"dis" => gbsH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1), $end),
+									"cost" => ($now['cost'] + 1)
+								  ));
+	
+		array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']-1],
+									$now[0]['X'],
+									$now[0]['Y'],
+									"dis" => gbsH(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), $end),
+									"cost" => ($now['cost'] + 1)
+								  ));
+
+		array_push($pqueue, array(	$maze[$now[0]['Y']-1][$now[0]['X']],
+									$now[0]['X'],
+									$now[0]['Y'],
+									"dis" => gbsH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1), $end),
+									"cost" => ($now['cost'] + 1)
+								  ));
+
 		return gbs_helper($maze, $pqueue, $end, $counter+1, $aimCount, $findCount);
 	}
 }

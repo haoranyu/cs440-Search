@@ -13,7 +13,7 @@ elseif(isset($_GET['bfs'])){
 }
 elseif(isset($_GET['gbs'])){
 	include("function.gbs.php");
-	$maze = gbs($maze, $start, $end);
+	$maze = gbs($maze, $start, $end, $aimCount);
 }
 elseif(isset($_GET['ucs'])){
 	include("function.ucs.php");

@@ -1,14 +1,21 @@
 <?php 
 function gbsH($now, $end){
+	$sum = 0;
 	$v1 = array($now['X'],$now['Y']);
-	$v2 = array($end['X'],$end['Y']);
-	return manhattanDis($v1,$v2);
+	foreach($end as $e){
+		$v2 = array($e['X'],$e['Y']);
+		$sum += manhattanDis($v1,$v2);
+	}
+	return $sum;
 }
-function gbs($maze, $start, $end){
-	$pqueue = array(array($maze[$start['Y']][$start['X']],'x','x',"dis" => gbsH($start, $end),"cost" => 0));
-	$maze[$start['Y']][$start['X']]["STAT"] = 1;
-	$maze = gbs_helper($maze, $pqueue, $end, 0, 1, 0);
-	return $maze;
+
+function evcFinish($end, $p){
+	$retval = array();
+	foreach($end as $e){
+		if($e['X'] != $p['X'] || $e['Y'] != $p['Y'])
+			array_push($retval, array("X" => $e['X'], "Y" => $e['Y']));
+	}
+	return $retval;
 }
 function array_uppri($array){
 	$obj = 0;
@@ -24,21 +31,29 @@ function array_uppri($array){
 	return $array;
 }
 
-function gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
-	if($frontier < sizeof($pqueue)){
-		$frontier = sizeof($pqueue);
-	}
+
+function gbs($maze, $start, $end, $aimCount){
+	$pqueue = array(array($maze[$start['Y']][$start['X']],'x','x',"dis" => 0,"cost" => 0));
+	$maze[$start['Y']][$start['X']]["STAT"] = 1;
+	$maze = gbs_helper($maze, $pqueue, $end, 0, $aimCount, 0);
+	return $maze;
+}
+
+function gbs_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount){
+
 	if(empty($pqueue)){
 		return -1;
 	}
 	$pqueue = array_uppri($pqueue);
 	$now = array_shift($pqueue);
 	
-	$depth = max($depth,$now['cost']);
-	
-	$maze[$now[0]['Y']][$now[0]['X']]["PREV"] = array($now[1],$now[2]);
 	if($maze[$now[0]['Y']][$now[0]['X']]["CONT"] == "."){
-		return array($maze,$now['cost'],$counter,$frontier,$depth);
+		$end = evcFinish($end, array("X" => $now[0]['X'], "Y" => $now[0]['Y']));
+		$maze[$now[0]['Y']][$now[0]['X']]["CONT"] = i2l($findCount);
+		$findCount++;
+	}
+	if($aimCount == $findCount){
+		return array($maze,$now['cost'], $counter);
 	}
 	else{
 		if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] == 0){
@@ -77,7 +92,7 @@ function gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 										"cost" => ($now['cost'] + 1)
 									  ));
 		}
-		return gbs_helper($maze, $pqueue, $end, $counter+1, $frontier, $depth);
+		return gbs_helper($maze, $pqueue, $end, $counter+1, $aimCount, $findCount);
 	}
 }
 

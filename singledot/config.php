@@ -1,10 +1,16 @@
 <?php
 	header('Content-Type: text/plain');
-	if(isset($_GET['map'])){
-		//$maze = file_get_contents('http://www.cs.illinois.edu/~slazebni/fall13/assignment1/'.$_GET['map'].'Maze.lay');
-		$maze = file_get_contents('test.lay');
+	
+	$map_array = array(
+				'big',
+				'open',
+				'small',
+				'medium');
+				
+	if(isset($_GET['map']) && (in_array($_GET['map'], $map_array))){
+		$maze = file_get_contents('map/'.$_GET['map'].'Maze.lay');
 	}
 	else{
-		exit("no map specified");
+		exit("no map specified(big, small, open, medium)");
 	}
 ?>

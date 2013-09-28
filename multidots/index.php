@@ -15,13 +15,9 @@ elseif(isset($_GET['gbs'])){
 	include("function.gbs.php");
 	$maze = gbs($maze, $start, $end, $aimCount);
 }
-elseif(isset($_GET['ucs'])){
-	include("function.ucs.php");
-	$maze = ucs($maze, $start);
-}
 elseif(isset($_GET['ass'])){
 	include("function.ass.php");
-	$maze = ass($maze, $start, $end);
+	$maze = ass($maze, $start, $end, $aimCount);
 }
 
 if($maze == -1){

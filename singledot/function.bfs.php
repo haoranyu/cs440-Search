@@ -17,7 +17,7 @@ function bfs_helper($maze, $queue, $counter, $frontier, $depth){
 	$depth = max($depth,$now['cost']);
 	$maze[$now[0]['Y']][$now[0]['X']]["PREV"] = array($now[1],$now[2]);
 	if($maze[$now[0]['Y']][$now[0]['X']]["CONT"] == "."){
-		return array($maze,$now['cost'],$counter,$frontier,$depth);
+		return array($maze,$now['cost'],$counter+1,$frontier,$depth);
 	}
 	else{
 		if($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] == 0){

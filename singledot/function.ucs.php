@@ -2,7 +2,7 @@
 function ucsH($x, $cost){
 	$newCost1 = pow(1/2,$x);
 	$newCost2 = pow(2,$x);
-	return  $newCost1 + $cost; //please change the return part to get different cost function
+	return  $newCost2 + $cost; //please change the return part to get different cost function
 }
 function ucs($maze, $start){
 	$pqueue = array(array($maze[$start['Y']][$start['X']],'x','x',"dis" => 0, "cost" => 0));
@@ -37,7 +37,7 @@ function ucs_helper($maze, $pqueue, $counter, $frontier, $depth){
 	$depth = max($depth,$now['cost']);
 	$maze[$now[0]['Y']][$now[0]['X']]["PREV"] = array($now[1],$now[2]);
 	if($maze[$now[0]['Y']][$now[0]['X']]["CONT"] == "."){
-		return array($maze,$now['cost'],$counter, $frontier, $depth);
+		return array($maze,$now['cost'],$counter+1, $frontier, $depth);
 	}
 	else{
 		if($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] == 0){

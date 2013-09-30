@@ -48,6 +48,7 @@ function ucs_helper($maze, $pqueue, $counter, $frontier, $depth){
 										"dis" => ucsH($now['dis'], $now[0]['X'] - 1), 
 										"cost" => ($now['cost'] + 1)
 									  ));
+			$counter++;
 		}
 		if($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] == 0){
 			$maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] = 1;
@@ -57,6 +58,7 @@ function ucs_helper($maze, $pqueue, $counter, $frontier, $depth){
 										"dis" => ucsH($now['dis'], $now[0]['X']), 
 										"cost" => ($now['cost'] + 1)
 									  ));
+			$counter++;
 		}
 		if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] == 0){
 			$maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] = 1;
@@ -66,6 +68,7 @@ function ucs_helper($maze, $pqueue, $counter, $frontier, $depth){
 										"dis" => ucsH($now['dis'], $now[0]['X'] + 1), 
 										"cost" => ($now['cost'] + 1)
 									  ));
+			$counter++;
 		}
 		if($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] == 0){
 			$maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] = 1;
@@ -75,8 +78,9 @@ function ucs_helper($maze, $pqueue, $counter, $frontier, $depth){
 										"dis" => ucsH($now['dis'], $now[0]['X']), 
 										"cost" => ($now['cost'] + 1)
 									  ));
+			$counter++;
 		}
-		return ucs_helper($maze, $pqueue, $counter+1, $frontier, $depth);
+		return ucs_helper($maze, $pqueue, $counter, $frontier, $depth);
 	}
 }
 

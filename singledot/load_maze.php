@@ -12,7 +12,10 @@ $hCount = 0;
 foreach($maze as &$ml){
 	$newArray = array();
 	for($i = 0; $i < $mazeW; $i++){
-			if("%" == $ml[$i] or "P" == $ml[$i]){
+			if("%" == $ml[$i]){
+				array_push($newArray,array("X" => $i, "Y" => $hCount, "CONT" => $ml[$i], "STAT" => -1, "PREV" => array("x","x")));
+			}
+			else if("P" == $ml[$i]){
 				array_push($newArray,array("X" => $i, "Y" => $hCount, "CONT" => $ml[$i], "STAT" => 1, "PREV" => array("x","x")));
 			}
 			else{

@@ -27,6 +27,7 @@ else{
 if($maze == -1){
 	exit("Cannot find a solution");
 }
+
 $maze[0] = drawSolution($maze[0], $end, $start);
 printMaze($maze[0],$mazeW,$mazeH);
 

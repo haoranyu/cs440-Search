@@ -14,7 +14,6 @@ function ass_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount, $nowA
 	}
 	$pqueue = array_uppri($pqueue);
 	$now = array_shift($pqueue);
-//	echo $now[0]['X'].",".$now[0]['Y']."=>".$nowAim["X"].",".$nowAim["Y"]."(".$findCount.")"."\n";
 
 	if($maze[$now[0]['Y']][$now[0]['X']]["CONT"] == "."){
 		$maze[$now[0]['Y']][$now[0]['X']]["CONT"] = i2l($findCount);
@@ -24,7 +23,7 @@ function ass_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount, $nowA
 		$findCount++;
 		return array($maze, array(array($maze[$now[0]['Y']][$now[0]['X']],
 										"dis" => assH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']), $nowAim, $now['cost']), 
-										"cost" => $now['cost'])), $end, $counter, $findCount, $nowAim);
+										"cost" => $now['cost'])), $end, $counter+1, $findCount, $nowAim);
 	}
 	else{
 		if(($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] != -1)){
@@ -33,7 +32,15 @@ function ass_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount, $nowA
 										"dis" => assH(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), getNowaim(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), ($now['cost'] +1)),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
+		}
+		else if($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] > ($findCount + 1) && ($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] != -1) && array_cheap($pqueue, $now['cost'] + 1, array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']))){
+			$pqueue = array_remove($pqueue, array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']));
+			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']-1],
+										$now[0]['X'],
+										$now[0]['Y'],
+										"dis" => assH(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), 
+										"cost" => ($now['cost'] + 1)
+									  ));
 		}
 		if(($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] != -1)){
 			$maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] = $findCount + 1;
@@ -41,7 +48,15 @@ function ass_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount, $nowA
 										"dis" => assH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1), getNowaim(array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1), $end, ($now['cost'] +1)), ($now['cost'] +1)),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
+		}
+		else if($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] > ($findCount + 1) && ($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] != -1) && array_cheap($pqueue, $now['cost'] + 1, array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1))){
+			$pqueue = array_remove($pqueue, array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1));
+			array_push($pqueue, array(	$maze[$now[0]['Y']+1][$now[0]['X']],
+										$now[0]['X'],
+										$now[0]['Y'],
+										"dis" => assH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1), $end, ($now['cost'] +1)), 
+										"cost" => ($now['cost'] + 1)
+									  ));
 		}
 		if(($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] != -1)){
 			$maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] = $findCount + 1;
@@ -49,17 +64,34 @@ function ass_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount, $nowA
 										"dis" => assH(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), getNowaim(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), ($now['cost'] +1)),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
 		}
+		else if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] > ($findCount + 1) && ($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] != -1) && array_cheap($pqueue, $now['cost'] + 1, array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']))){
+			$pqueue = array_remove($pqueue, array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']));
+			array_push($pqueue, array(	$maze[$now[0]['Y']][$now[0]['X']+1],
+										$now[0]['X'],
+										$now[0]['Y'],
+										"dis" => assH(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), $end, ($now['cost'] +1)), 
+										"cost" => ($now['cost'] + 1)
+									  ));
+		}
+		
 		if(($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] != -1)){
 			$maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] = $findCount + 1;
 			array_push($pqueue, array(	$maze[$now[0]['Y']-1][$now[0]['X']],
 										"dis" => assH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1), getNowaim(array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1), $end, ($now['cost'] +1)), ($now['cost'] +1)),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
 		}
-		return ass_helper($maze, $pqueue, $end, $counter, $aimCount, $findCount, $nowAim);
+		else if($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] > ($findCount + 1) && ($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] != -1) && array_cheap($pqueue, $now['cost'] + 1, array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1))){
+			$pqueue = array_remove($pqueue, array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1));
+			array_push($pqueue, array(	$maze[$now[0]['Y']-1][$now[0]['X']],
+										$now[0]['X'],
+										$now[0]['Y'],
+										"dis" => assH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1), $end, ($now['cost'] +1)), 
+										"cost" => ($now['cost'] + 1)
+									  ));
+		}
+		return ass_helper($maze, $pqueue, $end, $counter+1, $aimCount, $findCount, $nowAim);
 	}
 }
 
@@ -101,5 +133,14 @@ function array_uppri($array){
 	$array[$obj] = $temp;
 	return $array;
 }
-
+function array_cheap($array, $cost, $p){
+	foreach($array as $ap){
+		if($ap[0]['X'] == $p['X'] && $ap[0]['Y'] == $p['Y']){
+			if($ap['cost'] > $cost){
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
 ?>

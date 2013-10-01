@@ -33,7 +33,7 @@ function gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 	}
 	$pqueue = array_uppri($pqueue);
 	$now = array_shift($pqueue);
-	
+	//echo $counter." ".$now[0]['X'].",".$now[0]['Y'].":".$now['dis']."\n";
 	$depth = max($depth,$now['cost']);
 	
 	$maze[$now[0]['Y']][$now[0]['X']]["PREV"] = array($now[1],$now[2]);
@@ -49,7 +49,6 @@ function gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 										"dis" => gbsH(array("X" => $now[0]['X']-1, "Y" => $now[0]['Y']), $end),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
 		}
 		if($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] == 0){
 			$maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] = 1;
@@ -59,7 +58,6 @@ function gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 										"dis" => gbsH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']+1), $end),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
 		}
 		if($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] == 0){
 			$maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] = 1;
@@ -69,7 +67,6 @@ function gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 										"dis" => gbsH(array("X" => $now[0]['X']+1, "Y" => $now[0]['Y']), $end),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
 		}
 		if($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] == 0){
 			$maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] = 1;
@@ -79,9 +76,8 @@ function gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth){
 										"dis" => gbsH(array("X" => $now[0]['X'], "Y" => $now[0]['Y']-1), $end),
 										"cost" => ($now['cost'] + 1)
 									  ));
-			$counter++;
 		}
-		return gbs_helper($maze, $pqueue, $end, $counter, $frontier, $depth);
+		return gbs_helper($maze, $pqueue, $end, $counter+1, $frontier, $depth);
 	}
 }
 

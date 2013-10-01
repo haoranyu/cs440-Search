@@ -2,9 +2,11 @@
 function drawSolution($maze, $p, $start){
 	$maze[$p['Y']][$p['X']]["CONT"] = ".";
 	if($maze[$p['Y']][$p['X']]['PREV'][0] == $start['X'] && $maze[$p['Y']][$p['X']]['PREV'][1] == $start['Y']){  
+		
 		return $maze;
 	}
 	else{
+		//echo $maze[$p['Y']][$p['X']]['PREV'][0].",".$maze[$p['Y']][$p['X']]['PREV'][1]."\n";
 		return drawSolution($maze, array("X" => $maze[$p['Y']][$p['X']]['PREV'][0], "Y" => $maze[$p['Y']][$p['X']]['PREV'][1]),$start);
 	}
 }

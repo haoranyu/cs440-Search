@@ -19,30 +19,26 @@ function bfs_helper($maze, $queue, $counter, $aimCount, $findCount){
 		$maze[$now[0]['Y']][$now[0]['X']]["CONT"] = i2l($findCount);
 		$maze[$now[0]['Y']][$now[0]['X']]["STAT"]++;
 		$findCount++;
-		return array($maze, array(array($maze[$now[0]['Y']][$now[0]['X']],"cost" => $now['cost'])), $counter, $findCount);
+		return array($maze, array(array($maze[$now[0]['Y']][$now[0]['X']],"cost" => $now['cost'])), $counter+1, $findCount);
 	}
 	else{
 		if(($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] != -1)){
 			$maze[$now[0]['Y']][$now[0]['X']-1]["STAT"] = $findCount + 1;
 			array_push($queue, array($maze[$now[0]['Y']][$now[0]['X']-1],"cost" => ($now['cost'] + 1)));
-			$counter++;
 		}		
 		if(($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] != -1)){
 			$maze[$now[0]['Y']+1][$now[0]['X']]["STAT"] = $findCount + 1;
 			array_push($queue, array($maze[$now[0]['Y']+1][$now[0]['X']],"cost" => ($now['cost'] + 1)));
-			$counter++;
 		}
 		if(($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] != -1)){
 			$maze[$now[0]['Y']][$now[0]['X']+1]["STAT"] = $findCount + 1;
 			array_push($queue, array($maze[$now[0]['Y']][$now[0]['X']+1],"cost" => ($now['cost'] + 1)));
-			$counter++;
 		}
 		if(($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] != ($findCount + 1)) && ($maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] != -1)){
 			$maze[$now[0]['Y']-1][$now[0]['X']]["STAT"] = $findCount + 1;
 			array_push($queue, array($maze[$now[0]['Y']-1][$now[0]['X']],"cost" => ($now['cost'] + 1)));
-			$counter++;
 		}
-		return bfs_helper($maze, $queue, $counter, $aimCount, $findCount);
+		return bfs_helper($maze, $queue, $counter+1, $aimCount, $findCount);
 	}
 }
 

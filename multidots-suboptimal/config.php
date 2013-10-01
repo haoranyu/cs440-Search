@@ -3,7 +3,10 @@
 	
 	$map_array = array(
 				'medium',
-				'big');
+				'big',
+				'tiny',
+				'small',
+				'tricky');
 				
 	if(isset($_GET['map']) && (in_array($_GET['map'], $map_array))){
 		$maze = file_get_contents('map/'.$_GET['map'].'Search.lay');
